@@ -14,6 +14,40 @@ var num=0,oUl=$("#min_title_list"),hide_nav=$("#Hui-tabNav");
 function bntsaveshade(){
     return layer.load(2,{shade: [0.1, '#393D49']});
 }
+/*删除单条数据*/
+function record_del(obj,url,ids){
+    layer.confirm('确认要删除吗？',function(index){
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: url,
+            data: {id:ids},
+            success: function (data) {
+                if(data.status)
+                    layer.msg(data.msg,{icon:1,time:1000});
+                else
+                    layer.msg(data.msg,{icon:2,time:1000});
+                setTimeout(function(){
+                    return location.reload();
+                },1000);
+            }
+        });
+    });
+}
+/*保存返回提示函数*/
+function ajaxReturn(data){
+    if(data.status){
+        layer.msg(data.msg,{icon:1,time:2000});
+        setTimeout(function(){
+            var index = parent.layer.getFrameIndex(window.name);
+            parent.window.location.reload();
+            parent.layer.close(index);
+        },2000);
+    }else{
+        layer.msg(data.msg,{icon:2,time:2000});
+    }
+}
+
 /*获取顶部选项卡总长度*/
 function tabNavallwidth(){
 	var taballwidth=0,

@@ -1,12 +1,15 @@
 <?php
 namespace Admin\Controller;
+use Admin\Model\TextresponseModel;
 use Think\Controller;
 
-class BasicController extends Controller {
-
-    function _initraze(){
+class BasicController extends BaseController {
+    protected $textresponse;
+    function _initialize(){
         $this->textresponse = D('Textresponse');
     }
+
+
 
 
     public function text_response(){
@@ -14,15 +17,18 @@ class BasicController extends Controller {
         $this->display('text_response');
     }
     public function text_response_add(){
+        $id = I('id',0);
+        if($id){
+            $row = $this->textresponse->where(array('t_id'=>$id))->find();
+            $this->assign('info',$row);
+        }
         if(IS_POST){
-            print_r($this->textresponse->select());die();
-            if (!$this->textresponse->create()){ 
-                die($this->textresponse->getError());
+            if (!$this->textresponse->create()){
                 return $this->ajaxReturn(array('status'=>false,'msg'=>$this->textresponse->getError()));
              }else{   
-                $this->textresponse->add();
+                $rel = $this->textresponse->add();
             }
-            return $this->ajaxReturn(array('status'=>true,'msg'=>'sss'));
+            $this->return_save_result($rel);
         }
         $this->display('text_response_add');
     }
@@ -30,22 +36,29 @@ class BasicController extends Controller {
     public function text_response_list(){
         $start = I('start');
         $limit = I('length');
-        $iorder = I('order');
         $icolumn = I('columns');
         $sort_num = I('iSortCol_0','');
         $sort = I('mDataProp_'.$sort_num,'t_id');
         $dir = I('sSortDir_0','DESC');
-        $db=M('textresponse');
         $order=array($sort=>$dir);
-        $isearch = I('search');
-        $isearch['value']?$where="`t_title` like '%$isearch[value]%'":$where='';
-        $list=$db->where($where)->limit($start,$limit)->order($order)->select();
-        $num =$db->where($where)->count();
+        $isearch = I('sSearch','');
+        $isearch?$where="`t_keyword` like '%$isearch%'":$where='';
+        $list=$this->textresponse->where($where)->limit($start,$limit)->order($order)->select();
+        $num =$this->textresponse->where($where)->count();
         $data = array(
             'iTotalRecords' => $num,
             'iTotalDisplayRecords' => $num,
             'aaData' => $list
         );
         echo json_encode($data);
+    }
+
+    public function deletedata(){
+        $id = I('id',0);
+        if($id)
+            $rel = $this->textresponse->delete($id);
+        else
+            return $this->ajaxReturn(array('status'=>false,'msg'=>'没有数据！'));
+        $this->return_save_result($rel,'删除成功！','删除失败！');
     }
 }
