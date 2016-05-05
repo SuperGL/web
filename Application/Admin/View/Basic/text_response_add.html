@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html>
+<include file="Public:header" />
+<body>
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-text-add">
+        <input type="hidden"  value="<{$info['t_id']}>"   name="t_id">
+        <div class="row cl">
+            <label class="form-right form-label col-xs-3 col-sm-3"><span class="c-red">*</span>回复规则名称：</label>
+            <div class="formControls col-xs-9 col-sm-9">
+                <input type="text" class="input-text" value="<{$info['t_title']}>" placeholder="输入2-16个字符"  name="t_title">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>状态：</label>
+            <div class="formControls col-xs-9 col-sm-9 skin-minimal">
+                <div class="radio-box">
+                    <input name="t_state" type="radio" id="sex-1" checked>
+                    <label for="sex-1">启用</label>
+                </div>
+                <div class="radio-box">
+                    <input type="radio" id="sex-2" name="t_state">
+                    <label for="sex-2">禁用</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>触发关键字：</label>
+            <div class="formControls col-xs-9 col-sm-9">
+                <input type="text" class="input-text" value="<{$info['t_keyword']}>" placeholder="输入1-50个字符" id="mobile" name="t_keyword">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3">回复内容：</label>
+            <div class="formControls col-xs-9 col-sm-9">
+                <textarea name="k_content" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" onKeyUp="textarealength(this,100)"></textarea>
+                <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+<include file="Public:footer" />
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+    $(function(){
+        $("#form-text-add").validate({
+            rules:{
+                t_title:{
+                    required:true,
+                    minlength:2,
+                    maxlength:16
+                },
+                t_state:{
+                    required:true
+                },
+                t_keyword:{
+                    required:true,
+                    minlength:2,
+                    maxlength:50
+                },
+                t_content:{
+                    required:true,
+                    minlength:10
+                }
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                var index = bntsaveshade();
+                $(form).ajaxSubmit({
+                    success: function(data){
+                        if(data.status){
+                            layer.msg(data.msg,{icon:1,time:2000});
+                            setTimeout(function(){
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                                layer.close(index);
+                                parent.window.location.reload();
+                            },2000);
+                        }else{
+                            layer.msg(data.msg,{icon:2,time:2000});
+                            layer.close(index);
+                        }
+
+                    }
+                });
+
+
+            }
+        });
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
