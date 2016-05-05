@@ -15,13 +15,44 @@ function bntsaveshade(){
     return layer.load(2,{shade: [0.1, '#393D49']});
 }
 /*删除单条数据*/
-function record_del(obj,url,ids){
+function record_del(url,ids){
     layer.confirm('确认要删除吗？',function(index){
         $.ajax({
             type: "post",
             dataType: "json",
             url: url,
-            data: {id:ids},
+            data: {did:ids},
+            success: function (data) {
+                if(data.status)
+                    layer.msg(data.msg,{icon:1,time:1000});
+                else
+                    layer.msg(data.msg,{icon:2,time:1000});
+                setTimeout(function(){
+                    return location.reload();
+                },1000);
+            }
+        });
+    });
+}
+/*删除多条数据*/
+function record_del_all(url){
+    var id="";
+    var str_id=$("input[name='check_id']");
+    for(var i =0;i<str_id.length;i++){
+        if(str_id[i].checked){
+            id+=str_id[i].value+",";
+        }
+    }
+    if(id==""){
+        layer.msg("没有数据",{icon:5,time:1000});
+        return false;
+    }
+    layer.confirm("确定要删除所选数据吗？",function(index){
+        $.ajax({
+            type: "post",
+            dataType: "json",
+            url: url,
+            data: {did:id},
             success: function (data) {
                 if(data.status)
                     layer.msg(data.msg,{icon:1,time:1000});

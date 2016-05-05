@@ -15,11 +15,11 @@
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>状态：</label>
             <div class="formControls col-xs-9 col-sm-9 skin-minimal">
                 <div class="radio-box">
-                    <input name="t_state" type="radio" id="sex-1" checked>
+                    <input <if condition="($info['t_state'] eq 1) or (!$info['t_state'])">checked</if> value="1" name="t_state" type="radio" id="sex-1" >
                     <label for="sex-1">启用</label>
                 </div>
                 <div class="radio-box">
-                    <input type="radio" id="sex-2" name="t_state">
+                    <input <if condition="$info['t_state'] eq 2">checked</if> value="2" type="radio" id="sex-2" name="t_state">
                     <label for="sex-2">禁用</label>
                 </div>
             </div>
@@ -48,6 +48,11 @@
 <!--请在下方写此页面业务相关的脚本-->
 <script type="text/javascript">
     $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
         $("#form-text-add").validate({
             rules:{
                 t_title:{

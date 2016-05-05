@@ -54,7 +54,7 @@ class BasicController extends BaseController {
     }
 
     public function deletedata(){
-        $id = I('id',0);
+        $id = I('did',0);
         if($id)
             $rel = $this->textresponse->delete($id);
         else
