@@ -7,6 +7,8 @@
  */
 namespace Admin\Controller;
 
+use Vendor\Wechat\Menu;
+
 class SeniorController extends BaseController{
     protected $menu;
     function _initialize(){
@@ -14,6 +16,7 @@ class SeniorController extends BaseController{
     }
 
     public function menu_index(){
+        print_r(Menu::getMenu());
         $this->display('menu_index');
     }
     public function menu_add(){
@@ -83,5 +86,35 @@ class SeniorController extends BaseController{
         else
             return $this->ajaxReturn(array('status'=>false,'msg'=>'没有数据！'));
         $this->return_save_result($rel,'删除成功！','删除失败！');
+    }
+
+    public function menu_to_weixin(){
+        $mid = trim(I('mid',0),',');
+        if($mid){
+            $map['m_id'] = array('in',$mid);
+            $this->menu->where($map)->save(array('m_state'=>2));
+            $list = $this->menu->where("m_id in($mid)")->select();
+            foreach ($list as &$r) {
+                $a['id']=$r['m_id'];
+                $a['pid']=$r['m_pid'];
+                $a['name']=$r['m_name'];
+                $a['type']=$r['m_type'];
+                $a['code']=$r['m_attr'];
+                $newarr[]=$a;
+            }
+            $rel = Menu::setMenu($newarr);
+            if($rel===true){
+                return $this->ajaxReturn(array('status'=>true,'msg'=>'上传菜单成功！'));
+            }else{
+                return $this->ajaxReturn(array('status'=>false,'msg'=>$rel['errmsg']));
+            }
+        }else{
+            return $this->ajaxReturn(array('status'=>false,'msg'=>'没有选择菜单！'));
+        }
+    }
+    public function weixin_menu_delete(){
+        Menu::delMenu();
+        $this->menu->save(array('m_state'=>2));
+        return $this->ajaxReturn(array('status'=>true,'msg'=>'微信菜单删除成功！'));
     }
 }

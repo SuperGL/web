@@ -122,7 +122,7 @@ class Menu{
      */
     public static function delMenu(){
         //获取ACCESS_TOKEN
-        $accessToken = AccessToken::getAccessToken();
+        $accessToken = Wechatrequest::getAccessToken();
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/delete?access_token='.$accessToken;
         return Curl::callWebServer($url, '', 'GET');
     }

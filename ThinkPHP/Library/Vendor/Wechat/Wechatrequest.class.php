@@ -19,12 +19,12 @@ class Wechatrequest{
      */
     public static function getAccessToken(){
         //方法1. 缓存形式
-        if (isset($_SERVER['HTTP_APPNAME'])){        //SAE环境，需要开通memcache
-            $mem = memcache_init();
-        }else {                                        //本地环境，需已安装memcache
-            //   $mem = new Memcache;
-            //   $mem->connect('localhost', 11211) or die ("Could not connect");
-        }
+//        if (isset($_SERVER['HTTP_APPNAME'])){        //SAE环境，需要开通memcache
+//            $mem = memcache_init();
+//        }else {                                        //本地环境，需已安装memcache
+//               $mem = new Memcache;
+//               $mem->connect('localhost', 11211) or die ("Could not connect");
+//        }
         $access_token = S('accessToken');
         if (!isset($access_token) || empty($access_token)){
             $url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.C('WECHAT_APPID').'&secret='.C('WECHAT_APPSECRET');
