@@ -4,32 +4,31 @@
 <body>
 <article class="page-container">
     <form action="" method="post" class="form form-horizontal" id="form-text-add">
-        <input type="hidden"  value="<{$info['t_id']}>"   name="t_id">
+        <input type="hidden"  value="<{$info['m_id']}>"   name="m_id">
         <div class="row cl">
             <label class="form-right form-label col-xs-3 col-sm-3"><span class="c-red">*</span>菜单名称：</label>
             <div class="formControls col-xs-9 col-sm-9">
-                <input type="text" class="input-text" value="<{$info['t_title']}>" placeholder="输入2-16个字符"  name="t_title">
+                <input type="text" class="input-text" value="<{$info['m_name']}>" placeholder="输入1-7个字符"  name="m_name">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-right form-label col-xs-3 col-sm-3"><span class="c-red">*</span>上级菜单：</label>
+            <label class="form-right form-label col-xs-3 col-sm-3">上级菜单：</label>
             <div class="formControls col-xs-9 col-sm-9">
-                <span class="select-box inline">
-                    <select class="select" id="wktype"  name="keywords_type">
+                <span class="select-box inline"  style="width: 100%">
+                    <select class="select" style="width: 100%" name="m_pid">
                         <option value="">顶级菜单</option>
-                        <{foreach from=$wktype item=wkt}>
-                        <option value="<{$wkt.wt_id}>" <{if $info['wkrwdt_type']==$wkt.wt_id}>selected<{/if}>><{$wkt.wt_name}></option>
-                        <{/foreach}>
+                        <foreach name="menu" item="vo">
+                            <option value="<{$vo.m_id}>" ><{$vo.m_name}></option>
+                        </foreach>
                     </select>
                 </span>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>菜单类型：</label>
-
             <div class="formControls col-xs-9 col-sm-9">
-                <span class="select-box inline">
-                    <select id="menutype" class="select" name="keywords_type">
+                <span class="select-box inline"  style="width: 100%">
+                    <select id="menutype" style="width: 100%" class="select" name="m_type">
                         <option value="">请选择菜单类型</option>
                         <foreach name="type" item="vo">
                         <option value="<{$vo.key}>" ><{$vo.value}></option>
@@ -39,9 +38,11 @@
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>类型属性：</label>
+            <label id="typeattr" class="form-label col-xs-3 col-sm-3">
+                <span class="c-red">*</span>类型属性：
+            </label>
             <div class="formControls col-xs-9 col-sm-9">
-                <input type="text" class="input-text" value="<{$info['t_keyword']}>" placeholder="输入1-50个字符" id="mobile" name="t_keyword">
+                <input type="text" class="input-text"  placeholder="输入1-50个字符" name="m_attr">
             </div>
         </div>
         <div class="row cl">
@@ -57,6 +58,18 @@
     $(function(){
         $('#menutype').change(function(){
             var value = $(this).val();
+            var typeattrhtml = $('#typeattr');
+            var red = '<span class="c-red">*</span>';
+            switch(value){
+                case 'click':
+                    typeattrhtml.html(red+'Key：');
+                    break;
+                case 'view':
+                    typeattrhtml.html(red+'跳转Url：');
+                    break;
+                default:
+                    typeattrhtml.html(red+'类型属性：');
+            }
         })
         $('.skin-minimal input').iCheck({
             checkboxClass: 'icheckbox-blue',
@@ -65,22 +78,18 @@
         });
         $("#form-text-add").validate({
             rules:{
-                t_title:{
+                m_name:{
                     required:true,
-                    minlength:2,
-                    maxlength:16
+                    minlength:1,
+                    maxlength:7
                 },
                 m_type:{
                     required:true
                 },
-                t_keyword:{
+                m_attr:{
                     required:true,
                     minlength:2,
                     maxlength:50
-                },
-                t_content:{
-                    required:true,
-                    minlength:10
                 }
             },
             onkeyup:false,

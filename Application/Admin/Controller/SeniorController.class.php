@@ -17,6 +17,7 @@ class SeniorController extends BaseController{
         $this->display('menu_index');
     }
     public function menu_add(){
+        $menu = $this->menu->field('m_id,m_name')->where(array('m_pid'=>0))->select();
         $type = array(
             0=>array('key'=>'click','value'=>'点击推事件'),
             1=>array('key'=>'view','value'=>'跳转URL'),
@@ -29,6 +30,20 @@ class SeniorController extends BaseController{
             8=>array('key'=>'media_id','value'=>'下发消息（除文本消息）'),
             9=>array('key'=>'view_limited','value'=>'跳转图文消息URL')
         );
+        $id = I('id',0);
+        if($id){
+            $row = $this->menu->where(array('m_id'=>$id))->find();
+            $this->assign('info',$row);
+        }
+        if(IS_POST){
+            if (!$this->menu->create()){
+                return $this->ajaxReturn(array('status'=>false,'msg'=>$this->menu->getError()));
+            }else{
+                $rel = $this->menu->add();
+            }
+            $this->return_save_result($rel);
+        }
+        $this->assign('menu',$menu);
         $this->assign('type',$type);
         $this->display('menu_add');
     }
