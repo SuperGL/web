@@ -52,18 +52,36 @@ class SeniorController extends BaseController{
         $limit = I('length');
         $icolumn = I('columns');
         $sort_num = I('iSortCol_0','');
-        $sort = I('mDataProp_'.$sort_num,'t_id');
-        $dir = I('sSortDir_0','DESC');
+        $sort = I('mDataProp_'.$sort_num,'m_pid');
+        $dir = I('sSortDir_0','ASC');
         $order=array($sort=>$dir);
         $isearch = I('sSearch','');
         $isearch?$where="`m_name` like '%$isearch%'":$where='';
         $list=$this->menu->where($where)->limit($start,$limit)->order($order)->select();
         $num =$this->menu->where($where)->count();
+        foreach ($list as &$l) {
+            if($l['m_pid']){
+                $row = $this->menu->field('m_name')->where(array('m_id'=>$l['m_pid']))->find();
+                $l['m_pname'] = $row['m_name'];
+            }else{
+                $l['m_pname'] = '一级菜单';
+            }
+        }
+
         $data = array(
             'iTotalRecords' => $num,
             'iTotalDisplayRecords' => $num,
             'aaData' => $list
         );
         echo json_encode($data);
+    }
+
+    public function deletedata(){
+        $id = I('did',0);
+        if($id)
+            $rel = $this->menu->delete($id);
+        else
+            return $this->ajaxReturn(array('status'=>false,'msg'=>'没有数据！'));
+        $this->return_save_result($rel,'删除成功！','删除失败！');
     }
 }
