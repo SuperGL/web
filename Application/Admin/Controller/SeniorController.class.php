@@ -16,7 +16,7 @@ class SeniorController extends BaseController{
     }
 
     public function menu_index(){
-        print_r(Menu::getMenu());
+
         $this->display('menu_index');
     }
     public function menu_add(){
@@ -114,7 +114,7 @@ class SeniorController extends BaseController{
     }
     public function weixin_menu_delete(){
         Menu::delMenu();
-        $this->menu->save(array('m_state'=>2));
+        $this->menu->save(array('m_state'=>1));
         return $this->ajaxReturn(array('status'=>true,'msg'=>'微信菜单删除成功！'));
     }
 }
