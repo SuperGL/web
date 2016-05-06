@@ -160,6 +160,7 @@ class Wechatrequest{
         $fromtext = $request['content'];
         $text = M('Textresponse');
         $map['t_keyword'] = array('like',"%{$fromtext}%");
+        $map['t_state'] = array('eq',"1");
         $result = $text->field('t_content')->where($map)->find();
         $content = $result['t_content']?$result['t_content']:'请输入关键字...';
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);

@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html>
+<include file="Public:header" />
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 基本功能 <span class="c-gray en">&gt;</span> 文字回复 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px;margin-right: 5px;" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="record_del_all('deletedata');" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="layer_show('添加菜单','<{:U(\'Senior/menu_add\')}>',600,400)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加菜单</a></span></div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <th width="25"><input type="checkbox" name="" value=""></th>
+                <th width="80">菜单名称</th>
+                <th width="80">上级目录</th>
+                <th width="80">菜单类型</th>
+                <th width="40">类型属性</th>
+                <th width="40">菜单状态</th>
+                <th width="20">操作</th>
+            </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<include file="Public:footer" />
+<script type="text/javascript">
+    //列表
+    $(".table-sort").dataTable({
+        "bServerSide": true,
+        "bPaginate": true, //是否分页
+        "bAutoWidth":true,
+        "bInfo":true,
+        "bProcessing": true, //datatable获取数据时候是否显示正在处理提示信息。
+        "iDisplayLength": 15,
+        'bFilter': true, //是否使用内置的过滤功能
+        "bLengthChange":true,//表格上方，每面显示XX条的信息
+        "bDestroy" : true,
+        "bSortCellsTop" : true,
+        "aLengthMenu": [10, 15, 20, 25],
+        "sAjaxSource": '__CONTROLLER__/menu_list',
+        "aaSorting": [[0, "DESC"]],
+        "aoColumnDefs": [
+            {"orderable":false,"aTargets":[0,6]}// 不参与排序的列
+        ],
+        "aoColumns": [
+            {"mData": "m_id",  "mRender": function(data,type,full) {
+                return "<input type='checkbox' value='"+data+"' name='check_id'>";
+            }},
+            {"mData": "m_name"},
+            {"mData": "m_pid"},
+            {"mData": "m_type"},
+            {"mData": "m_attr"},
+            {"mData": "m_state", "mRender": function(v,type,r) {
+                if(v==1){
+                    return "本地";
+                }else if(v==2){
+                    return "微信";
+                }else{
+                    return "";
+                }
+            }
+            },
+            {"mData": "m_id",  "mRender": function(v,type,r) {
+                return '<a style="text-decoration:none" class="ml-5" href="javascript:;"  onclick="layer_show(\'添加基本文字回复\',\'<{:U("Basic/text_response_add/id/\'+v+\'")}>\',600,400);"><i class="Hui-iconfont" title="编辑">&#xe6df;</i></a> ' +
+                        '<a style="text-decoration:none" class="ml-5" onClick="record_del(\'deletedata\',\''+v+'\')" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a> ';
+            }}
+        ],
+        "oLanguage": {
+            "sLengthMenu": "每页显示 _MENU_ 项记录",
+            "sZeroRecords": "没有符合的数据...",
+            "sInfo": "当前数据从第 _START_ 到第 _END_ 条项数据；总共有 _TOTAL_ 条记录",
+            "sInfoEmpty": "显示 0 至 0 共 0 项",
+            "sInfoFiltered": "(_MAX_)",
+            "loadingRecords":"数据加载中...",
+            "zeroRecords":    "没有数据",
+            "sSearch":"菜单名称检索"
+        },
+        "createdRow": function( row, data, dataIndex ) {
+            $(row).children('td').eq(0).attr('style', 'text-align: center;');
+            $(row).children('td').eq(6).attr('style', 'text-align: center;');
+        }
+
+    });
+</script>
+</body>
+</html>

@@ -34,14 +34,14 @@ class Menu{
     public static function setMenu($menuList){
         //树形排布
         $menuList2 = $menuList;
-//        foreach($menuList as $key=>$menu){
-//            foreach($menuList2 as $k=>$menu2){
-//                if($menu['id'] == $menu2['pid']){
-//                    $menuList[$key]['sub_button'][] = $menu2;
-//                    unset($menuList[$k]);
-//                }
-//            }
-//        }
+        foreach($menuList as $key=>$menu){
+            foreach($menuList2 as $k=>$menu2){
+                if($menu['id'] == $menu2['pid']){
+                    $menuList[$key]['sub_button'][] = $menu2;
+                    unset($menuList[$k]);
+                }
+            }
+        }
         //处理数据
         foreach($menuList as $key=>$menu){
             //处理type和code

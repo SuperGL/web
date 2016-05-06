@@ -1,0 +1,105 @@
+<!DOCTYPE HTML>
+<html>
+<include file="Public:header" />
+<body>
+<article class="page-container">
+    <form action="" method="post" class="form form-horizontal" id="form-text-add">
+        <input type="hidden"  value="<{$info['t_id']}>"   name="t_id">
+        <div class="row cl">
+            <label class="form-right form-label col-xs-3 col-sm-3"><span class="c-red">*</span>菜单名称：</label>
+            <div class="formControls col-xs-9 col-sm-9">
+                <input type="text" class="input-text" value="<{$info['t_title']}>" placeholder="输入2-16个字符"  name="t_title">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-right form-label col-xs-3 col-sm-3"><span class="c-red">*</span>上级菜单：</label>
+            <div class="formControls col-xs-9 col-sm-9">
+                <span class="select-box inline">
+                    <select class="select" id="wktype"  name="keywords_type">
+                        <option value="">顶级菜单</option>
+                        <{foreach from=$wktype item=wkt}>
+                        <option value="<{$wkt.wt_id}>" <{if $info['wkrwdt_type']==$wkt.wt_id}>selected<{/if}>><{$wkt.wt_name}></option>
+                        <{/foreach}>
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>菜单类型：</label>
+
+            <div class="formControls col-xs-9 col-sm-9">
+                <span class="select-box inline">
+                    <select id="menutype" class="select" name="keywords_type">
+                        <option value="">请选择菜单类型</option>
+                        <foreach name="type" item="vo">
+                        <option value="<{$vo.key}>" ><{$vo.value}></option>
+                        </foreach>
+                    </select>
+                </span>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>类型属性：</label>
+            <div class="formControls col-xs-9 col-sm-9">
+                <input type="text" class="input-text" value="<{$info['t_keyword']}>" placeholder="输入1-50个字符" id="mobile" name="t_keyword">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+<include file="Public:footer" />
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+    $(function(){
+        $('#menutype').change(function(){
+            var value = $(this).val();
+        })
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+        $("#form-text-add").validate({
+            rules:{
+                t_title:{
+                    required:true,
+                    minlength:2,
+                    maxlength:16
+                },
+                m_type:{
+                    required:true
+                },
+                t_keyword:{
+                    required:true,
+                    minlength:2,
+                    maxlength:50
+                },
+                t_content:{
+                    required:true,
+                    minlength:10
+                }
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                var index = bntsaveshade();
+                $(form).ajaxSubmit({
+                    success: function(data){
+                        ajaxReturn(data);
+                        layer.close(index);
+                    }
+                });
+
+
+            }
+        });
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
