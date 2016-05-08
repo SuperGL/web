@@ -65,14 +65,20 @@ function record_del_all(url){
         });
     });
 }
-/*保存返回提示函数*/
-function ajaxReturn(data){
+/*保存返回提示函数
+* type 1 父页面
+* */
+function ajaxReturn(data,type){
     if(data.status){
         layer.msg(data.msg,{icon:1,time:2000});
         setTimeout(function(){
-            var index = parent.layer.getFrameIndex(window.name);
-            parent.window.location.reload();
-            parent.layer.close(index);
+            if(type==1){
+                window.location.reload();
+            }else{
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.window.location.reload();
+                parent.layer.close(index);
+            }
         },2000);
     }else{
         layer.msg(data.msg,{icon:2,time:2000});

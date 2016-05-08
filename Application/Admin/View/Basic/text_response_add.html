@@ -79,6 +79,7 @@
             submitHandler:function(form){
                 var index = bntsaveshade();
                 $(form).ajaxSubmit({
+                    url:"<{:U('Basic/text_response_add')}>",
                     success: function(data){
                         ajaxReturn(data);
                         layer.close(index);
