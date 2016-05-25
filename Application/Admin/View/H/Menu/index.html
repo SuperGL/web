@@ -44,6 +44,7 @@
                         <th>菜单类型</th>
                         <th>菜单属性</th>
                         <th>菜单状态</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                 </table>
@@ -67,8 +68,12 @@
             pagination: true,
             showColumns: true,
             showRefresh: true,
-            pageList: [1,2],
-            pageSize:2,
+            showToggle:true,
+            pageList: [15,25],
+            striped:true,//是否显示行间隔色
+            cache: false,
+            queryParams: $('#menu_list').queryParams,//传递参数（*）
+            pageSize:15,
             pageNumber:1,
             search: true,
             clickToSelect: true,
@@ -78,7 +83,8 @@
                 {
                     field:'m_name',
                     align:'center',
-                    valign:'middle'
+                    valign:'middle',
+                    sortable:true
                 },
                 {
                     field:'m_pid',
@@ -88,7 +94,8 @@
                 {
                     field:'m_type',
                     align:'center',
-                    valign:'middle'
+                    valign:'middle',
+                    sortable:true
                 },
                 {
                     field:'m_attr',
@@ -98,10 +105,38 @@
                 {
                     field:'m_state',
                     align:'center',
-                    valign:'middle'
+                    valign:'middle',
+                    sortable:true,
+                    formatter:function(v,r,i){
+                        if(v==1)
+                            return '本地';
+                        else
+                            return '微信';
+                    }
+                },
+                {
+                    field:'m_id',
+                    align:'center',
+                    valign:'middle',
+                    formatter:function(v){
+                        return '删除';
+                    }
                 }
             ]
         })
+        //得到查询的参数
+
+        $('#menu_list').queryParams = function (params) {
+            var temp = { //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.limit, //页面大小
+                offset: params.offset, //页码
+                departmentname: $("#txt_search_departmentname").val(),
+                statu: $("#txt_search_statu").val()
+            };
+            return temp;
+        };
+
+
     })
 </script>
 </body>

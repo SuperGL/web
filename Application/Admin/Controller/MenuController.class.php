@@ -12,9 +12,11 @@ class MenuController extends Controller {
     }
 
     public function data_list(){
-        $limit['limit'] = I('limit',0);
-        $limit['offset'] = I('offset',0);
-        $list = $this->memu_model->limit($limit)->select();
+        $limit= I('limit',0);
+        $offset = I('offset',0);
+        $sort = I('sort','m_id');
+        $order = I('order','DESC');
+        $list = $this->memu_model->limit($limit,$offset)->order($sort.' '.$order)->select();
         $count = $this->memu_model->count();
         $result['rows']=$list;
         $result['total']=$count;
