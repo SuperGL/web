@@ -1,29 +1,10 @@
 <!DOCTYPE html>
 <html>
-
-
-<!-- Mirrored from www.zi-han.net/theme/hplus/table_bootstrap.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 20 Jan 2016 14:20:03 GMT -->
-<head>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-    <title>H+ 后台主题UI框架 - Bootstrap Table</title>
-    <meta name="keywords" content="H+后台主题,后台bootstrap框架,会员中心主题,后台HTML,响应式后台">
-    <meta name="description" content="H+是一个完全响应式，基于Bootstrap3最新版本开发的扁平化主题，她采用了主流的左右两栏式布局，使用了Html5+CSS3等现代技术">
-
-    <link rel="shortcut icon" href="favicon.ico"> <link href="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/css/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/css/animate.min.css" rel="stylesheet">
-    <link href="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/css/style.min862f.css?v=4.1.0" rel="stylesheet">
-</head>
+<include file="Public/head" />
 <body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="col-sm-12">
         <div class="example-wrap">
-            <h4 class="example-title">工具条</h4>
             <div class="example">
                 <div class="btn-group hidden-xs" id="exampleToolbar" role="group">
                     <button type="button" class="btn btn-outline btn-default">
@@ -40,6 +21,7 @@
                 <table id="menu_list" data-mobile-responsive="true">
                     <thead>
                     <tr>
+                        <th><input type="checkbox"></th>
                         <th>菜单名称</th>
                         <th>上级菜单</th>
                         <th>菜单类型</th>
@@ -53,15 +35,17 @@
         </div>
     </div>
 </div>
-<script src="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/js/jquery.min.js?v=2.1.4"></script>
-<script src="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/js/bootstrap.min.js?v=3.3.6"></script>
-<script src="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/js/content.min.js?v=1.0.0"></script>
-<script src="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/js/plugins/bootstrap-table/bootstrap-table.min.js"></script>
-<script src="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/js/plugins/bootstrap-table/bootstrap-table-mobile.min.js"></script>
-<script src="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-<script src="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/js/demo/bootstrap-table-demo.min.js"></script>
-<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+<include file="Public/foot" />
 <script>
+    function datarowaction(type,url){
+        switch(type){
+            case 1:
+                break;
+            default:
+                return '';
+        }
+
+    }
     $(function(){
         $('#menu_list').bootstrapTable({
             url:'data_list',
@@ -83,6 +67,13 @@
             sidePagination:'server',
             columns:[
                 {
+                    field:'m_id',
+                    align:'center',
+                    valign:'middle',
+                    formatter:function(v){
+                            return '<input type="checkbox">';
+                    }
+                },{
                     field:'m_name',
                     align:'center',
                     valign:'middle',
@@ -121,7 +112,13 @@
                     align:'center',
                     valign:'middle',
                     formatter:function(v){
-                        return '删除';
+                        return '<div class="btn-group">' +
+                                '<button type="button" class="btn btn-success dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">' +
+                                '操作 <span class="caret"></span></button>' +
+                                '<ul class="dropdown-menu">' +
+                                '<li><a href="#" onclick="datarowaction(1,\'aaa\');return false;">删除</a></li>' +
+                                '<li><a href="#" onclick="datarowaction(2,\'bbb\');return false;">编辑</a></li>' +
+                                '</ul></div>';
                     }
                 }
             ]
