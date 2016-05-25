@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+<include file="Public:header" />
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 基本功能 <span class="c-gray en">&gt;</span> 系统回复 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px;margin-right: 5px;" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="panel panel-default">
+        <div class="panel-header">系统回复</div>
+        <div class="panel-body">
+            <form action="" method="post" class="form form-horizontal" id="form-sys-add">
+                <input type="hidden"  value="<{$info['s_id']}>"   name="s_id">
+                <div class="row cl">
+                    <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>欢迎内容：</label>
+                    <div class="formControls col-xs-9 col-sm-9">
+                        <textarea  name="s_welcome" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符"><{$info['s_welcome']}></textarea>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <label class="form-label col-xs-3 col-sm-3"><span class="c-red">*</span>默认回复内容：</label>
+                    <div class="formControls col-xs-9 col-sm-9">
+                        <textarea  name="s_default" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符"><{$info['s_default']}></textarea>
+                    </div>
+                </div>
+                <div class="row cl">
+                    <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                        <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<include file="Public:footer" />
+<script type="text/javascript">
+    $(function(){
+        $("#form-sys-add").validate({
+            rules:{
+                s_welcome:{
+                    required:true,
+                    minlength:10
+                },
+                s_default:{
+                    required:true,
+                    minlength:10
+                }
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                var index = bntsaveshade();
+                $(form).ajaxSubmit({
+                    url:"<{:U('Basic/sys_response_index')}>",
+                    success: function(data){
+                        ajaxReturn(data,1);
+                        layer.close(index);
+                    }
+                });
+            }
+        });
+    });
+</script>
+</body>
+</html>

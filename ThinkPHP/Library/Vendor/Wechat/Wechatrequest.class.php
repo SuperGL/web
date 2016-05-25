@@ -237,21 +237,23 @@ class Wechatrequest{
      * @return array
      */
     public static function eventSubscribe(&$request){
-        $wxuser = M('Wxuser');
-        $data['wxuser_openid'] = $request['fromusername'];
-        $userinfo = Weixin::getUserInfo($request['fromusername']);
-        $data['wxuser_subscribe'] = $userinfo['subscribe'];
-        $data['wxuser_nickname'] = $userinfo['nickname'];
-        $data['wxuser_sex'] = $userinfo['sex'];
-        $data['wxuser_city'] = $userinfo['city'];
-        $data['wxuser_country'] = $userinfo['country'];
-        $data['wxuser_province'] = $userinfo['province'];
-        $data['wxuser_headimgurl'] = $userinfo['headimgurl'];
-        $data['wxuser_subscribe_time'] = $request['createtime'];
-        $data['wxuser_remark'] = $userinfo['remark'];
-        $data['wxuser_groupid'] = $userinfo['groupid'];
-        $wxuser->data($data)->add();
-        $content = $userinfo['nickname'].'欢迎您，我们正在成长';
+        $user = M('User');
+        $data['u_openid'] = $request['fromusername'];
+        $userinfo = User::getUserInfo($request['fromusername']);
+        $data['u_subscribe'] = $userinfo['subscribe'];
+        $data['u_nickname'] = $userinfo['nickname'];
+        $data['u_sex'] = $userinfo['sex'];
+        $data['u_city'] = $userinfo['city'];
+        $data['u_country'] = $userinfo['country'];
+        $data['u_province'] = $userinfo['province'];
+        $data['u_headimgurl'] = $userinfo['headimgurl'];
+        $data['u_subscribe_time'] = $request['createtime'];
+        $data['u_remark'] = $userinfo['remark'];
+        $data['u_groupid'] = $userinfo['groupid'];
+        $user->data($data)->add();
+        $sys=M('Sysresponse');
+        $row = $sys->where('s_id=1')->find();
+        $content = $userinfo['nickname'].$row['s_welcome'];
         return ResponsePassive::text($request['fromusername'], $request['tousername'], $content);
     }
 

@@ -25,8 +25,12 @@ class BasicController extends BaseController {
         if(IS_POST){
             if (!$this->textresponse->create()){
                 return $this->ajaxReturn(array('status'=>false,'msg'=>$this->textresponse->getError()));
-             }else{   
-                $rel = $this->textresponse->add();
+             }else{
+                if($_POST['t_id']){
+                    $rel = $this->textresponse->save();
+                }else{
+                    $rel = $this->textresponse->add();
+                }
             }
             $this->return_save_result($rel);
         }
@@ -60,5 +64,25 @@ class BasicController extends BaseController {
         else
             return $this->ajaxReturn(array('status'=>false,'msg'=>'没有数据！'));
         $this->return_save_result($rel,'删除成功！','删除失败！');
+    }
+
+    /*系统回复*/
+    public function sys_response_index(){
+        $sysmodel = M('Sysresponse');
+        if(IS_POST){
+            if (!$sysmodel->create()){
+                return $this->ajaxReturn(array('status'=>false,'msg'=>$this->textresponse->getError()));
+            }else{
+                if($_POST['s_id']){
+                    $rel = $sysmodel->save();
+                }else{
+                    $rel = $sysmodel->add();
+                }
+            }
+            $this->return_save_result($rel);
+        }
+        $info = $sysmodel->where('s_id=1')->find();
+        $this->assign('info',$info);
+        $this->display('sys_response_index');
     }
 }
