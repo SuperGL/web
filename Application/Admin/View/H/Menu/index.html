@@ -19,10 +19,9 @@
     <link href="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/css/animate.min.css" rel="stylesheet">
     <link href="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/css/style.min862f.css?v=4.1.0" rel="stylesheet">
 </head>
-<body class="gray-bg">
+<body class="white-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="col-sm-12">
-        <!-- Example Toolbar -->
         <div class="example-wrap">
             <h4 class="example-title">工具条</h4>
             <div class="example">
@@ -40,13 +39,16 @@
                 <table id="menu_list" data-mobile-responsive="true">
                     <thead>
                     <tr>
-                        <th data-field="name">菜单名称</th>
+                        <th>菜单名称</th>
+                        <th>上级菜单</th>
+                        <th>菜单类型</th>
+                        <th>菜单属性</th>
+                        <th>菜单状态</th>
                     </tr>
                     </thead>
                 </table>
             </div>
         </div>
-        <!-- End Example Toolbar -->
     </div>
 </div>
 <script src="__PUBLIC__/Admin/<{$Think.config.DEFAULT_THEME}>/js/jquery.min.js?v=2.1.4"></script>
@@ -63,15 +65,38 @@
             url:'data_list',
             dataType: "json",
             pagination: true,
+            showColumns: true,
+            showRefresh: true,
             pageList: [1,2],
-            pageSize:1,
+            pageSize:2,
             pageNumber:1,
             search: true,
+            clickToSelect: true,
+            smartDisplay:true,
             sidePagination:'server',
             columns:[
                 {
-                    title: '活动名称',
                     field:'m_name',
+                    align:'center',
+                    valign:'middle'
+                },
+                {
+                    field:'m_pid',
+                    align:'center',
+                    valign:'middle'
+                },
+                {
+                    field:'m_type',
+                    align:'center',
+                    valign:'middle'
+                },
+                {
+                    field:'m_attr',
+                    align:'center',
+                    valign:'middle'
+                },
+                {
+                    field:'m_state',
                     align:'center',
                     valign:'middle'
                 }

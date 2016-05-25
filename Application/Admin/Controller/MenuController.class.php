@@ -14,7 +14,7 @@ class MenuController extends Controller {
     public function data_list(){
         $limit['limit'] = I('limit',0);
         $limit['offset'] = I('offset',0);
-        $list = $this->memu_model->field('m_name')->limit($limit)->select();
+        $list = $this->memu_model->limit($limit)->select();
         $count = $this->memu_model->count();
         $result['rows']=$list;
         $result['total']=$count;
